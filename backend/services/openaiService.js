@@ -13,51 +13,33 @@ You are an expert AI course planner.
 
 Create a structured 7-day crash course for the topic: "{topic}".
 
-Respond in **valid JSON format** as an array of 7 objects. Each object represents a day in the course and must include:
+Respond in **valid JSON format** as an array of 7 objects. Each object must include:
 
 - "day": number (1 to 7)
 - "title": short and engaging title of the day's topic
-- "summary": 2-3 sentence overview of what the user will learn
-- "objectives": 3 learning objectives (as an array)
-- "resources": array of 2–4 items, each with:
-  - "type": either "YouTube" or "Article"
-  - "title": title of the resource
-  - "url": a valid and relevant link e (real, if possible,)
-- "quiz": array of 3–5 multiple-choice questions; each with:
+- "summary": 2–3 sentence overview of what the learner will understand or explore
+- "activity": one hands-on task or coding challenge the learner should complete
+- "quiz": array of 2–3 multiple-choice questions; each question must include:
   - "question": string
-  - "options": array of 4 options
+  - "options": array of 4 answer choices
   - "answer": correct option as a string
 - "notesPlaceholder": string (e.g., "Write your notes here...")
 
-Example format:
+Do not include any external links (e.g., YouTube or articles).
+
+Example output format:
 
 [
   {{
     "day": 1,
     "title": "Introduction to Machine Learning",
-    "summary": "Get familiar with the basics of machine learning, key concepts, and how it's used in real life.",
-    "objectives": [
-      "Understand what machine learning is",
-      "Explore key types of ML: supervised, unsupervised, reinforcement",
-      "Identify real-world applications"
-    ],
-    "resources": [
-      {{
-        "type": "YouTube",
-        "title": "Intro to ML - CrashCourse",
-        "url": "https://youtube.com/example"
-      }},
-      {{
-        "type": "Article",
-        "title": "Machine Learning Basics",
-        "url": "https://example.com/article"
-      }}
-    ],
+    "summary": "Get familiar with what machine learning is, and why it's becoming increasingly important across industries.",
+    "activity": "Install Python and write a simple script that prints 'Hello, Machine Learning'.",
     "quiz": [
       {{
-        "question": "Which of the following is a type of machine learning?",
-        "options": ["Supervised", "Organized", "Filtered", "Segmented"],
-        "answer": "Supervised"
+        "question": "Which of these is a real-world application of machine learning?",
+        "options": ["Time travel", "Facial recognition", "Plant watering", "Printing books"],
+        "answer": "Facial recognition"
       }}
     ],
     "notesPlaceholder": "Write your notes here..."
