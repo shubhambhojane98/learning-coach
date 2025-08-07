@@ -1,9 +1,28 @@
+"use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sparkles, BookOpen, Clock, Zap } from "lucide-react";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
+  const [topic, setTopic] = useState("");
+  console.log(topic);
+
+  const handleGenerate = async () => {
+    const res = await fetch("/api/generate-course", {
+      method: "POST",
+      body: JSON.stringify({ topic }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+    console.log("D", data);
+    // IF NOT LOGGED IN
+    const tempId = uuidv4(); // temporary ID
+    localStorage.setItem(`course-${tempId}`, JSON.stringify(data));
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white flex flex-col">
       {/* Header */}
@@ -86,6 +105,8 @@ export default function Home() {
                 <div className="relative">
                   <Input
                     type="text"
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
                     placeholder="Enter any topic you want to learn"
                     className="w-full h-14 px-6 text-lg border-2 border-sky-100 rounded-xl focus:!border-sky-400 focus:ring-sky-400 bg-gray-50 focus:bg-white transition-all duration-200"
                   />
@@ -94,6 +115,10 @@ export default function Home() {
                 <Button
                   type="submit"
                   size="lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleGenerate();
+                  }}
                   className="w-full h-14 text-lg font-semibold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                 >
                   <Zap className="w-5 h-5 mr-2" />
