@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Sparkles, BookOpen, Clock, Zap } from "lucide-react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [topic, setTopic] = useState("");
+  const router = useRouter();
   console.log(topic);
 
   const handleGenerate = async () => {
@@ -22,6 +24,8 @@ export default function Home() {
     // IF NOT LOGGED IN
     const tempId = uuidv4(); // temporary ID
     localStorage.setItem(`course-${tempId}`, JSON.stringify(data));
+
+    router.push(`/course/${tempId}`);
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white flex flex-col">

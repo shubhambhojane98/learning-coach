@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Lock, Play, BookOpen } from "lucide-react";
+import { useParams } from "next/navigation";
 
 interface CourseDay {
   day: number;
@@ -14,6 +15,8 @@ interface CourseDay {
 }
 
 export default function CourseOverview() {
+  const { id } = useParams();
+  const [course, setCourse] = useState<any>(null);
   const [courseProgress, setCourseProgress] = useState<CourseDay[]>([
     {
       day: 1,
@@ -65,6 +68,18 @@ export default function CourseOverview() {
       status: "locked",
     },
   ]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(`course-${id}`);
+    if (stored) {
+      setCourse(JSON.parse(stored));
+    } else {
+      // Optionally show 404 or redirect
+      console.log("Course not found in localStorage");
+    }
+  }, [id]);
+
+  console.log("course", course);
 
   const handleStartDay = (day: number) => {
     setCourseProgress((prev) =>
