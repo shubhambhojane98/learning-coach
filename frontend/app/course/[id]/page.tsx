@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Lock, Play, BookOpen } from "lucide-react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 interface CourseDay {
   day: number;
@@ -216,15 +217,21 @@ export default function CourseOverview() {
                   }`}
                 >
                   {course.status === "completed" ? (
-                    <>
+                    <Link
+                      className="flex items-center"
+                      href={`/course/${course.day}/day/${course.day}`}
+                    >
                       <CheckCircle className="mr-2 size-4" />
                       Review Day
-                    </>
+                    </Link>
                   ) : course.status === "current" ? (
-                    <>
+                    <Link
+                      className="flex items-center"
+                      href={`/course/${course.day}/day/${course.day}`}
+                    >
                       <Play className="mr-2 size-4" />
                       Start Day
-                    </>
+                    </Link>
                   ) : (
                     <>
                       <Lock className="mr-2 size-4" />
