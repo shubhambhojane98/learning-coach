@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -77,7 +77,7 @@ export default function DayDetailsPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-sky-500 text-white py-8">
+      <div className="bg-blue-500 text-white py-8">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3 mb-2">
             <Badge variant="secondary" className="bg-white/20 text-white">
@@ -118,7 +118,7 @@ export default function DayDetailsPage() {
         <Card className="transition-all duration-200 hover:shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-sky-500" />
+              <Target className="w-5 h-5 text-blue-500" />
               Learning Objective
             </CardTitle>
           </CardHeader>
@@ -172,7 +172,7 @@ export default function DayDetailsPage() {
         <Card className="transition-all duration-200 hover:shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-sky-500" />
+              <HelpCircle className="w-5 h-5 text-blue-500" />
               Knowledge Check
             </CardTitle>
             <CardDescription>
@@ -197,7 +197,7 @@ export default function DayDetailsPage() {
                         value={option}
                         checked={selectedAnswers[index] === option}
                         onChange={() => handleQuizAnswer(index, option)}
-                        className="text-sky-500 focus:ring-sky-500"
+                        className="text-blue-500 focus:ring-blue-500"
                       />
                       <span className="text-sm">{option}</span>
                     </label>
@@ -212,7 +212,7 @@ export default function DayDetailsPage() {
         <Card className="transition-all duration-200 hover:shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-sky-500" />
+              <BookOpen className="w-5 h-5 text-blue-500" />
               Personal Notes
             </CardTitle>
             <CardDescription>
@@ -243,7 +243,7 @@ export default function DayDetailsPage() {
             onClick={handleMarkComplete}
             disabled={isCompleted}
             size="lg"
-            className="px-8 py-3 text-base font-semibold transition-all duration-200 hover:scale-105 bg-sky-500 hover:bg-sky-600 text-white"
+            className="px-8 py-3 text-base font-semibold transition-all duration-200 hover:scale-105 bg-blue-500 hover:bg-blue-600 text-white"
           >
             {isCompleted ? (
               <>
@@ -258,7 +258,7 @@ export default function DayDetailsPage() {
 
         {isCompleted && (
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-sky-100 text-sky-700 px-4 py-2 rounded-full text-sm font-medium">
+            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium">
               <CheckCircle2 className="w-4 h-4" />
               Great job! Day 2 is now unlocked
             </div>

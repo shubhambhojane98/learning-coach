@@ -17,6 +17,7 @@ interface CourseDay {
 
 export default function CourseOverview() {
   const { id } = useParams();
+  console.log("ID", id);
   const [course, setCourse] = useState<any>(null);
   const [courseProgress, setCourseProgress] = useState<CourseDay[]>([
     {
@@ -82,20 +83,6 @@ export default function CourseOverview() {
 
   console.log("course", course);
 
-  const handleStartDay = (day: number) => {
-    setCourseProgress((prev) =>
-      prev.map((course) => {
-        if (course.day === day && course.status === "current") {
-          return { ...course, status: "completed" as const };
-        }
-        if (course.day === day + 1 && course.status === "locked") {
-          return { ...course, status: "current" as const };
-        }
-        return course;
-      })
-    );
-  };
-
   const getStatusIcon = (status: CourseDay["status"]) => {
     switch (status) {
       case "completed":
@@ -130,8 +117,8 @@ export default function CourseOverview() {
     }
   };
 
-  const completedDays = courseProgress.filter(
-    (day) => day.status === "completed"
+  const completedDays = course?.course.content.filter(
+    (day: any) => day.status === "completed"
   ).length;
   const progressPercentage = (completedDays / 7) * 100;
 
@@ -143,12 +130,11 @@ export default function CourseOverview() {
           <div className="mb-4 inline-flex items-center gap-2">
             <BookOpen className="size-8 text-blue-600" />
             <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
-              7-Day Crash Course: Machine Learning
+              {`7-Day Crash Course: ${course?.course.topic}`}
             </h1>
           </div>
           <p className="mx-auto mb-6 max-w-2xl text-lg text-slate-600">
-            Master the fundamentals of Machine Learning in just one week with
-            our comprehensive, hands-on curriculum designed for beginners.
+            {course?.course.intro}
           </p>
 
           {/* Progress Bar */}
@@ -168,7 +154,7 @@ export default function CourseOverview() {
 
         {/* Course Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {courseProgress.map((course, index) => (
+          {course?.course.content.map((course: any, index: any) => (
             <Card
               key={course.day}
               className={`group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl ${
@@ -205,40 +191,42 @@ export default function CourseOverview() {
                   {course.summary}
                 </p>
 
-                <Button
-                  onClick={() => handleStartDay(course.day)}
-                  disabled={course.status === "locked"}
-                  className={`mt-auto w-full transition-all duration-200 ${
-                    course.status === "completed"
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg"
-                      : course.status === "current"
-                      ? "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg"
-                      : "cursor-not-allowed bg-slate-300 text-slate-500 hover:bg-slate-300"
-                  }`}
-                >
-                  {course.status === "completed" ? (
+                {course.status === "completed" ||
+                course.status === "current" ? (
+                  <Button
+                    asChild
+                    className={`mt-auto w-full transition-all duration-200 ${
+                      course.status === "completed"
+                        ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg"
+                        : "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg"
+                    }`}
+                  >
                     <Link
+                      href={`/course/${id}/day/${course.day}`}
                       className="flex items-center"
-                      href={`/course/${course.day}/day/${course.day}`}
                     >
-                      <CheckCircle className="mr-2 size-4" />
-                      Review Day
+                      {course.status === "completed" ? (
+                        <>
+                          <CheckCircle className="mr-2 size-4" />
+                          Review Day
+                        </>
+                      ) : (
+                        <>
+                          <Play className="mr-2 size-4" />
+                          Start Day
+                        </>
+                      )}
                     </Link>
-                  ) : course.status === "current" ? (
-                    <Link
-                      className="flex items-center"
-                      href={`/course/${course.day}/day/${course.day}`}
-                    >
-                      <Play className="mr-2 size-4" />
-                      Start Day
-                    </Link>
-                  ) : (
-                    <>
-                      <Lock className="mr-2 size-4" />
-                      Locked
-                    </>
-                  )}
-                </Button>
+                  </Button>
+                ) : (
+                  <Button
+                    disabled
+                    className="mt-auto w-full cursor-not-allowed bg-slate-300 text-slate-500 hover:bg-slate-300"
+                  >
+                    <Lock className="mr-2 size-4" />
+                    Locked
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -256,14 +244,14 @@ export default function CourseOverview() {
             <div className="h-8 w-px bg-slate-300" />
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
-                {7 - completedDays}
+                {7 - (Number(completedDays) || 0)}
               </div>
               <div className="text-sm text-slate-600">Days Remaining</div>
             </div>
             <div className="h-8 w-px bg-slate-300" />
             <div className="text-center">
               <div className="text-2xl font-bold text-emerald-600">
-                {Math.round(progressPercentage)}%
+                {Math.round(progressPercentage) || 0}%
               </div>
               <div className="text-sm text-slate-600">Progress</div>
             </div>

@@ -9,10 +9,11 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [topic, setTopic] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  console.log(topic);
 
   const handleGenerate = async () => {
+    setLoading(true);
     const res = await fetch("/api/generate-course", {
       method: "POST",
       body: JSON.stringify({ topic }),
@@ -20,20 +21,26 @@ export default function Home() {
     });
 
     const data = await res.json();
-    console.log("D", data);
+    setLoading(false);
+    console.log("DATA", data);
     // IF NOT LOGGED IN
     const tempId = uuidv4(); // temporary ID
     localStorage.setItem(`course-${tempId}`, JSON.stringify(data));
 
     router.push(`/course/${tempId}`);
   };
+
+  if (loading) {
+    return <div>Loading...........</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col">
       {/* Header */}
       <header className="w-full px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
               <BookOpen className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900">LearnFast</span>
@@ -43,25 +50,25 @@ export default function Home() {
           <nav className="hidden md:flex items-center space-x-8">
             <a
               href="#"
-              className="text-gray-600 hover:text-sky-600 transition-colors"
+              className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               How it works
             </a>
             <a
               href="#"
-              className="text-gray-600 hover:text-sky-600 transition-colors"
+              className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               Examples
             </a>
             <a
               href="#"
-              className="text-gray-600 hover:text-sky-600 transition-colors"
+              className="text-gray-600 hover:text-blue-600 transition-colors"
             >
               Pricing
             </a>
             <Button
               variant="outline"
-              className="ml-4 border-sky-200 text-sky-600 hover:bg-sky-50 bg-transparent"
+              className="ml-4 border-blue-200 text-blue-600 hover:bg-blue-50 bg-transparent"
             >
               Sign In
             </Button>
@@ -72,7 +79,7 @@ export default function Home() {
             <Button
               variant="outline"
               size="sm"
-              className="border-sky-200 text-sky-600 hover:bg-sky-50 bg-transparent"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 bg-transparent"
             >
               Sign In
             </Button>
@@ -85,13 +92,13 @@ export default function Home() {
         <div className="w-full max-w-4xl mx-auto text-center">
           {/* Hero Section */}
           <div className="mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-sky-100 text-sky-700 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
               <Sparkles className="w-4 h-4 mr-2" />
               AI-Powered Learning
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Master Any Topic in <span className="text-sky-500">7 Days</span>
+              Master Any Topic in <span className="text-blue-500">7 Days</span>
               <br />— Powered by AI
             </h1>
 
@@ -104,7 +111,7 @@ export default function Home() {
 
           {/* Input Section */}
           <div className="max-w-2xl mx-auto mb-16">
-            <div className="bg-white rounded-2xl shadow-xl shadow-sky-100/50 p-8 border border-sky-100">
+            <div className="bg-white rounded-2xl shadow-xl shadow-blue-100/50 p-8 border border-blue-100">
               <form className="space-y-6">
                 <div className="relative">
                   <Input
@@ -112,7 +119,7 @@ export default function Home() {
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Enter any topic you want to learn"
-                    className="w-full h-14 px-6 text-lg border-2 border-sky-100 rounded-xl focus:!border-sky-400 focus:ring-sky-400 bg-gray-50 focus:bg-white transition-all duration-200"
+                    className="w-full h-14 px-6 text-lg border-2 border-blue-100 rounded-xl focus:!border-blue-400 focus:ring-blue-400 bg-gray-50 focus:bg-white transition-all duration-200"
                   />
                 </div>
 
@@ -123,7 +130,7 @@ export default function Home() {
                     e.preventDefault();
                     handleGenerate();
                   }}
-                  className="w-full h-14 text-lg font-semibold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
+                  className="w-full h-14 text-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                 >
                   <Zap className="w-5 h-5 mr-2" />
                   Generate My Crash Course
@@ -140,8 +147,8 @@ export default function Home() {
           {/* Features */}
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-6 h-6 text-sky-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 7-Day Structure
@@ -152,8 +159,8 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-sky-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 AI-Personalized
@@ -164,8 +171,8 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-6 h-6 text-sky-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 Any Topic
@@ -179,7 +186,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full px-4 py-8 sm:px-6 lg:px-8 border-t border-sky-100">
+      <footer className="w-full px-4 py-8 sm:px-6 lg:px-8 border-t border-blue-100">
         <div className="max-w-7xl mx-auto text-center text-gray-500">
           <p>&copy; 2025 LearnFast. Accelerate your learning journey.</p>
         </div>
